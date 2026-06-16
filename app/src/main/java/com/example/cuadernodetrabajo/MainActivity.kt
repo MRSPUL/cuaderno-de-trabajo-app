@@ -1,47 +1,47 @@
 package com.example.cuadernodetrabajo
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.cuadernodetrabajo.data.AppDatabase
+import com.example.cuadernodetrabajo.repository.CorteRepository
+import com.example.cuadernodetrabajo.ui.AppNavigation
 import com.example.cuadernodetrabajo.ui.theme.CuadernoDeTrabajoTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        val database = AppDatabase.getDatabase(this)
+        val repository = CorteRepository(database.corteDao())
+
+        // 1. Leemos la memoria del teléfono para ver si ya completó el onboarding
+        val sharedPreferences = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE)
+        val onboardingCompletado = sharedPreferences.getBoolean("ONBOARDING_OK", false)
+
+        // 2. Decidimos la ruta inicial
+        val rutaInicial = if (onboardingCompletado) "home" else "onboarding"
+
         setContent {
             CuadernoDeTrabajoTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    // 3. Le pasamos estos datos a la navegación
+                    AppNavigation(
+                        repository = repository,
+                        startDestination = rutaInicial,
+                        sharedPreferences = sharedPreferences
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    CuadernoDeTrabajoTheme {
-        Greeting("Android")
     }
 }
