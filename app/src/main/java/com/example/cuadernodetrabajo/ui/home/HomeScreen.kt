@@ -39,11 +39,8 @@ fun HomeScreen(
     onNavigateToDetalle: (Int) -> Unit,
     onSyncClick: () -> Unit
 ) {
-    // 1. Estado para guardar lo que el usuario escribe
     var textoBusqueda by remember { mutableStateOf("") }
 
-    // 2. Filtramos la lista: si el texto está vacío, muestra todo.
-    // Si tiene algo, busca coincidencias en el numeroCorte.
     val cortesFiltrados = cortes.filter {
         it.numeroCorte.contains(textoBusqueda, ignoreCase = true)
     }
@@ -76,9 +73,7 @@ fun HomeScreen(
         }
     ) { paddingValues ->
 
-        // Verificamos si la base de datos está vacía
         if (cortes.isEmpty()) {
-            // Mostramos el Estado Vacío
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -87,7 +82,7 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_caja_home), // Cambiar por tu ícono de caja
+                    painter = painterResource(id = R.drawable.ic_caja_home),
                     contentDescription = "Caja vacía",
                     modifier = Modifier.size(80.dp),
                     tint = Color.Gray
@@ -98,13 +93,11 @@ fun HomeScreen(
                 Text("Tocá el botón + para agregar tu primer corte", fontSize = 14.sp, color = Color.Gray)
             }
         } else {
-            // Mostramos la lista de Cards con el buscador arriba
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                // EL BUSCADOR
                 OutlinedTextField(
                     value = textoBusqueda,
                     onValueChange = { textoBusqueda = it },
@@ -116,13 +109,12 @@ fun HomeScreen(
                     singleLine = true
                 )
 
-                // LA LISTA (Usando la variable filtrada)
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(horizontal = 16.dp)
                 ) {
-                    items(cortesFiltrados) { corte -> // Usamos 'cortesFiltrados' en vez de 'cortes'
+                    items(cortesFiltrados) { corte ->
                         CorteCard(corte = corte, onNavigateToDetalle = onNavigateToDetalle)
                     }
                 }
@@ -155,19 +147,17 @@ fun CorteCard(
                 contentAlignment = Alignment.Center
             ) {
                 if (corte.photoUri != null) {
-                    // Si el corte tiene foto, Coil la renderiza perfectamente en la Card
                     AsyncImage(
                         model = corte.photoUri.toUri(),
                         contentDescription = "Foto del corte",
                         modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop // Recorta la imagen para que llene el cuadrado nítidamente
+                        contentScale = ContentScale.Crop
                     )
                 }
             }
 
             Spacer(modifier = Modifier.width(16.dp))
 
-            // Textos de la tarjeta
             Column {
                 Text(
                     text = "${corte.marca} - Corte #${corte.numeroCorte}",
@@ -181,7 +171,6 @@ fun CorteCard(
                     color = MaterialTheme.colorScheme.primary
                 )
 
-                // Formateamos la fecha para que se vea como "22/05/2026"
                 val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val fechaString = sdf.format(Date(corte.fechaCreacion))
 

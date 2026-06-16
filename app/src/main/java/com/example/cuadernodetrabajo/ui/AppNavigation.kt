@@ -31,7 +31,6 @@ fun AppNavigation(
         composable("onboarding") {
             OnboardingScreen(
                 onFinish = {
-                    // ¡AQUÍ ESTÁ LA MAGIA! Guardamos en memoria que ya lo vio
                     sharedPreferences.edit().putBoolean("ONBOARDING_OK", true).apply()
 
                     navController.navigate("home") {
@@ -42,7 +41,7 @@ fun AppNavigation(
         }
 
         composable("home") {
-            val context = LocalContext.current // Necesario para el Toast
+            val context = LocalContext.current
             val viewModel: CorteViewModel = viewModel(factory = CorteViewModelFactory(repository))
             val listaCortes by viewModel.allCortes.collectAsState()
 
@@ -50,7 +49,6 @@ fun AppNavigation(
                 cortes = listaCortes,
                 onNavigateToNewCorte = { navController.navigate("nuevo_corte") },
                 onNavigateToDetalle = { id -> navController.navigate("detalle_corte/$id") },
-                // Ejecutamos la sincronización y mostramos un mensaje
                 onSyncClick = {
                     Toast.makeText(context, "Sincronizando...", Toast.LENGTH_SHORT).show()
                     viewModel.syncDataWithServer { success ->
@@ -62,16 +60,14 @@ fun AppNavigation(
         }
 
         composable("nuevo_corte") {
-            // Reutilizamos la lógica del ViewModel
             val viewModel: CorteViewModel = viewModel(
                 factory = CorteViewModelFactory(repository)
             )
 
-            // Llamamos a nuestra nueva pantalla
+
             NuevoCorteScreen(
                 viewModel = viewModel,
                 onNavigateBack = {
-                    // popBackStack simula tocar la flecha "Atrás" del celular
                     navController.popBackStack()
                 }
             )

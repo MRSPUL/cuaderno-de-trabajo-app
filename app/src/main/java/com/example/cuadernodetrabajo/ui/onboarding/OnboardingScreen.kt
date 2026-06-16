@@ -46,7 +46,6 @@ fun OnboardingScreen(onFinish: () -> Unit) {
     val scope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Pager deslizable
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.weight(1f)
@@ -54,14 +53,12 @@ fun OnboardingScreen(onFinish: () -> Unit) {
             PagerScreen(page = pages[position])
         }
 
-        // Indicadores (puntitos) y Botón
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp, vertical = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Indicadores
             Row(
                 Modifier
                     .height(50.dp)
@@ -80,7 +77,6 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                 }
             }
 
-            // Botón "Siguiente" o "Empezar a trabajar!"
             Button(
                 onClick = {
                     if (pagerState.currentPage < pages.size - 1) {

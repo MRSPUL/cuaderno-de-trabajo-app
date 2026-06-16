@@ -6,10 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 class CorteRepository(private val corteDao: CorteDao) {
 
-    // Obtenemos todos los cortes directamente del DAO
     val allCortes: Flow<List<Corte>> = corteDao.getAllCortes()
 
-    // Funciones suspend para no bloquear la pantalla principal
     suspend fun insert(corte: Corte) {
         corteDao.insertCorte(corte)
     }

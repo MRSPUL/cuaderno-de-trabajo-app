@@ -30,30 +30,30 @@ fun DetalleCorteScreen(
     viewModel: CorteViewModel,
     onNavigateBack: () -> Unit
 ) {
-    // Buscamos el corte seleccionado desde el estado del ViewModel
+
     val corteList by viewModel.allCortes.collectAsState()
     val corte = corteList.find { it.id == corteId }
 
 
-    // mostramos un indicador de carga mientras Room lee la base de datos.
+
     if (corte == null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
-        return // Pausamos la construcción de esta vista hasta que 'corte' tenga datos
+        return
     }
 
-    // Estados para la edición
+
     var isEditing by remember { mutableStateOf(false) }
     var marca by remember { mutableStateOf(corte.marca) }
     var numeroCorte by remember { mutableStateOf(corte.numeroCorte) }
     var cantidad by remember { mutableStateOf(corte.cantidadCamisas.toString()) }
     var datosAdicionales by remember { mutableStateOf(corte.datosAdicionales) }
 
-    // Estado para el diálogo de eliminación (Frame 10 de tu Figma)
+
     var showDeleteDialog by remember { mutableStateOf(false) }
 
-    // Diálogo de confirmación de eliminación
+
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
@@ -83,14 +83,14 @@ fun DetalleCorteScreen(
         )
     }
 
-    // Estado para el cartel de edición exitosa
+
     var showSuccessDialog by remember { mutableStateOf(false) }
     val context = androidx.compose.ui.platform.LocalContext.current
 
-    // Cartel de éxito (El mismo que usamos para crear)
+
     if (showSuccessDialog) {
         AlertDialog(
-            onDismissRequest = { /* Bloqueamos toque afuera */ },
+            onDismissRequest = {},
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_check_onboarding),
@@ -200,7 +200,7 @@ fun DetalleCorteScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Botones inferiores dinámicos
+
             if (isEditing) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -222,7 +222,6 @@ fun DetalleCorteScreen(
                     Spacer(modifier = Modifier.width(16.dp))
                     Button(
                         onClick = {
-                            // Validamos que no hayan dejado la marca, número o cantidad vacíos
                             if (marca.isBlank() || numeroCorte.isBlank() || cantidad.isBlank()) {
                                 android.widget.Toast.makeText(
                                     context,

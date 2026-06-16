@@ -21,11 +21,11 @@ class MainActivity : ComponentActivity() {
         val database = AppDatabase.getDatabase(this)
         val repository = CorteRepository(database.corteDao())
 
-        // 1. Leemos la memoria del teléfono para ver si ya completó el onboarding
+
         val sharedPreferences = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE)
         val onboardingCompletado = sharedPreferences.getBoolean("ONBOARDING_OK", false)
 
-        // 2. Decidimos la ruta inicial
+
         val rutaInicial = if (onboardingCompletado) "home" else "onboarding"
 
         setContent {
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // 3. Le pasamos estos datos a la navegación
+
                     AppNavigation(
                         repository = repository,
                         startDestination = rutaInicial,

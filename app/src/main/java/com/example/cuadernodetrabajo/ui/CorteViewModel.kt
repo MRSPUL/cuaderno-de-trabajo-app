@@ -29,15 +29,13 @@ class CorteViewModel(private val repository: CorteRepository) : ViewModel() {
         repository.delete(corte)
     }
 
-    // Función para enviar los datos a la API simulada
+
     fun syncDataWithServer(onResult: (Boolean) -> Unit) {
         viewModelScope.launch {
             try {
-                // Tomamos la lista actual de cortes guardados en Room
                 val cortesActuales = allCortes.value
 
                 if (cortesActuales.isNotEmpty()) {
-                    // Enviamos los datos usando nuestro cliente Retrofit
                     val response = RetrofitClient.apiService.syncCortes(cortesActuales)
 
                     if (response.isSuccessful) {
@@ -48,7 +46,6 @@ class CorteViewModel(private val repository: CorteRepository) : ViewModel() {
                         onResult(false)
                     }
                 } else {
-                    // No hay datos para sincronizar
                     onResult(true)
                 }
             } catch (e: Exception) {
@@ -59,8 +56,7 @@ class CorteViewModel(private val repository: CorteRepository) : ViewModel() {
     }
 }
 
-// Esta clase "Factory" es necesaria para poder pasarle el Repositorio al ViewModel
-// cuando la instanciemos en el MainActivity o NavHost
+
 class CorteViewModelFactory(private val repository: CorteRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CorteViewModel::class.java)) {

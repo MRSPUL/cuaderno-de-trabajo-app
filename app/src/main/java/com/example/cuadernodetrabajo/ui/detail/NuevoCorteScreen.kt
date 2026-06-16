@@ -35,7 +35,6 @@ import java.util.Date
 import java.util.Locale
 
 
-// Función utilitaria para crear un archivo temporal de imagen
 fun Context.createImageFile(): File {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     return File.createTempFile("JPEG_${timeStamp}_", ".jpg", cacheDir)
@@ -49,33 +48,27 @@ fun NuevoCorteScreen(
 ) {
     val context = LocalContext.current
 
-    // Estados del formulario
     var marca by remember { mutableStateOf("") }
     var numeroCorte by remember { mutableStateOf("") }
     var cantidad by remember { mutableStateOf("") }
     var datosAdicionales by remember { mutableStateOf("") }
 
-    // Estados para la cámara
     var tempPhotoUri by remember { mutableStateOf<Uri?>(null) }
     var photoUri by remember { mutableStateOf<Uri?>(null) }
 
-    // Estado para mostrar el cartel de éxito
     var showSuccessDialog by remember { mutableStateOf(false) }
 
-    // Lanzador de la cámara
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
         if (success) {
-            // Si el usuario sacó la foto y le dio al tilde, guardamos la URI final
             photoUri = tempPhotoUri
         }
     }
 
-    // Cartel de éxito
     if (showSuccessDialog) {
         AlertDialog(
-            onDismissRequest = { /* No dejamos que se cierre tocando afuera para obligar a usar el botón */ },
+            onDismissRequest = {},
             icon = {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_check_onboarding),
@@ -96,7 +89,7 @@ fun NuevoCorteScreen(
                 Button(
                     onClick = {
                         showSuccessDialog = false
-                        onNavigateBack() // ¡AHORA SÍ volvemos al historial!
+                        onNavigateBack()
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
@@ -129,14 +122,12 @@ fun NuevoCorteScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Recuadro de la foto
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .background(Color.LightGray)
                     .clickable {
-                        // Creamos el archivo y obtenemos su URI
                         val file = context.createImageFile()
                         val uri = FileProvider.getUriForFile(
                             context,
@@ -149,7 +140,6 @@ fun NuevoCorteScreen(
                 contentAlignment = Alignment.Center
             ) {
                 if (photoUri != null) {
-                    // Si hay foto, usamos Coil para mostrarla
                     AsyncImage(
                         model = photoUri,
                         contentDescription = "Foto del corte",
@@ -157,7 +147,6 @@ fun NuevoCorteScreen(
                         contentScale = ContentScale.Crop
                     )
                 } else {
-                    // Si no hay foto, mostramos tu ícono
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_camara_onboarding),
@@ -187,7 +176,7 @@ fun NuevoCorteScreen(
                     if (it.all { char -> char.isDigit() }) numeroCorte = it
                 },
                 label = { Text("Número de corte") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), // Teclado numérico
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -217,7 +206,6 @@ fun NuevoCorteScreen(
 
             Button(
                 onClick = {
-                    // 1. Validamos que la foto, LA MARCA, el número y la cantidad no estén vacíos
                     if (photoUri == null || marca.isBlank() || numeroCorte.isBlank() || cantidad.isBlank()) {
                         // Mostramos el cartel de advertencia actualizado
                         android.widget.Toast.makeText(
@@ -236,7 +224,6 @@ fun NuevoCorteScreen(
                         )
                         viewModel.insert(nuevoCorte)
 
-                        // 3. Mostramos el diálogo de éxito verde
                         showSuccessDialog = true
                     }
                 },
