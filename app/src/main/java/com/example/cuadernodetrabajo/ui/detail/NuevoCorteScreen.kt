@@ -207,14 +207,14 @@ fun NuevoCorteScreen(
             Button(
                 onClick = {
                     if (photoUri == null || marca.isBlank() || numeroCorte.isBlank() || cantidad.isBlank()) {
-                        // Mostramos el cartel de advertencia actualizado
+
                         android.widget.Toast.makeText(
                             context,
                             "Falta completar: Foto, Marca, Número o Cantidad",
                             android.widget.Toast.LENGTH_LONG
                         ).show()
                     } else {
-                        // 2. Si todo está bien, guardamos en la base de datos
+
                         val nuevoCorte = Corte(
                             marca = marca,
                             numeroCorte = numeroCorte,

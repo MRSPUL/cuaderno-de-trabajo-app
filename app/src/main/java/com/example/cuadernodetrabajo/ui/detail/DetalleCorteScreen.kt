@@ -225,7 +225,7 @@ fun DetalleCorteScreen(
                             if (marca.isBlank() || numeroCorte.isBlank() || cantidad.isBlank()) {
                                 android.widget.Toast.makeText(
                                     context,
-                                    "⚠️ La marca, el número y la cantidad son obligatorios",
+                                    "La marca, el número y la cantidad son obligatorios",
                                     android.widget.Toast.LENGTH_LONG
                                 ).show()
                             } else {
