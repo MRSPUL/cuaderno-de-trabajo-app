@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.model
+package com.cuadernodetrabajo.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

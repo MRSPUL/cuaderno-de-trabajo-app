@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui.onboarding
+package com.cuadernodetrabajo.ui.onboarding
 
 import androidx.annotation.DrawableRes
 data class OnboardingPage(

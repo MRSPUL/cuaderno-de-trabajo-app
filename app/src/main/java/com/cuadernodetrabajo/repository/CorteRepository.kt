@@ -1,7 +1,7 @@
-package com.example.cuadernodetrabajo.repository
+package com.cuadernodetrabajo.repository
 
-import com.example.cuadernodetrabajo.data.CorteDao
-import com.example.cuadernodetrabajo.model.Corte
+import com.cuadernodetrabajo.data.CorteDao
+import com.cuadernodetrabajo.model.Corte
 import kotlinx.coroutines.flow.Flow
 
 class CorteRepository(private val corteDao: CorteDao) {

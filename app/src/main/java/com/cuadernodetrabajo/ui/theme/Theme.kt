@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui.theme
+package com.cuadernodetrabajo.ui.theme
 
 import android.app.Activity
 import android.os.Build

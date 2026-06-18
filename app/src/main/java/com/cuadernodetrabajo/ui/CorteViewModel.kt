@@ -1,15 +1,15 @@
-package com.example.cuadernodetrabajo.ui
+package com.cuadernodetrabajo.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.cuadernodetrabajo.model.Corte
-import com.example.cuadernodetrabajo.repository.CorteRepository
+import com.cuadernodetrabajo.model.Corte
+import com.cuadernodetrabajo.repository.CorteRepository
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import com.example.cuadernodetrabajo.network.RetrofitClient
+import com.cuadernodetrabajo.network.RetrofitClient
 import android.util.Log
 
 class CorteViewModel(private val repository: CorteRepository) : ViewModel() {

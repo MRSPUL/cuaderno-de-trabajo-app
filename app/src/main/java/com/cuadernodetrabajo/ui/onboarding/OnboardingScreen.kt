@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui.onboarding
+package com.cuadernodetrabajo.ui.onboarding
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
-import com.example.cuadernodetrabajo.R
+import com.cuadernodetrabajo.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

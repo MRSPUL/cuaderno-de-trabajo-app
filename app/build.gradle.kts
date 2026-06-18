@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.cuadernodetrabajo"
+    namespace = "com.cuadernodetrabajo"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.cuadernodetrabajo"
+        applicationId = "com.cuadernodetrabajo"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui.detail
+package com.cuadernodetrabajo.ui.detail
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
-import com.example.cuadernodetrabajo.ui.CorteViewModel
-import com.example.cuadernodetrabajo.R
+import com.cuadernodetrabajo.ui.CorteViewModel
+import com.cuadernodetrabajo.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

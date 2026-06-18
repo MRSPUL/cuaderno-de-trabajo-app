@@ -1,11 +1,11 @@
-package com.example.cuadernodetrabajo.data
+package com.cuadernodetrabajo.data
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.cuadernodetrabajo.model.Corte
+import com.cuadernodetrabajo.model.Corte
 import kotlinx.coroutines.flow.Flow
 
 @Dao

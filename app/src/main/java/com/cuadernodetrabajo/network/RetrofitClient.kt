@@ -1,6 +1,6 @@
-package com.example.cuadernodetrabajo.network
+package com.cuadernodetrabajo.network
 
-import com.example.cuadernodetrabajo.model.Corte
+import com.cuadernodetrabajo.model.Corte
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body

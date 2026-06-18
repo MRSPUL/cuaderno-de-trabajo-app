@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui
+package com.cuadernodetrabajo.ui
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -9,13 +9,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cuadernodetrabajo.repository.CorteRepository
-import com.example.cuadernodetrabajo.ui.detail.NuevoCorteScreen
-import com.example.cuadernodetrabajo.ui.home.HomeScreen
-import com.example.cuadernodetrabajo.ui.onboarding.OnboardingScreen
+import com.cuadernodetrabajo.repository.CorteRepository
+import com.cuadernodetrabajo.ui.detail.NuevoCorteScreen
+import com.cuadernodetrabajo.ui.home.HomeScreen
+import com.cuadernodetrabajo.ui.onboarding.OnboardingScreen
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.cuadernodetrabajo.ui.detail.DetalleCorteScreen
+import com.cuadernodetrabajo.ui.detail.DetalleCorteScreen
 import android.content.SharedPreferences
 
 @Composable

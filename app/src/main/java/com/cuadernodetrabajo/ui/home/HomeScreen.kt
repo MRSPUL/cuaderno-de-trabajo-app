@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui.home
+package com.cuadernodetrabajo.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,11 +17,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cuadernodetrabajo.model.Corte
+import com.cuadernodetrabajo.model.Corte
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import com.example.cuadernodetrabajo.R
+import com.cuadernodetrabajo.R
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import androidx.compose.ui.layout.ContentScale

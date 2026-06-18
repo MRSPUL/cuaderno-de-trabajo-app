@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui.detail
+package com.cuadernodetrabajo.ui.detail
 
 import android.content.Context
 import android.net.Uri
@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
-import com.example.cuadernodetrabajo.R
-import com.example.cuadernodetrabajo.model.Corte
-import com.example.cuadernodetrabajo.ui.CorteViewModel
+import com.cuadernodetrabajo.R
+import com.cuadernodetrabajo.model.Corte
+import com.cuadernodetrabajo.ui.CorteViewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date

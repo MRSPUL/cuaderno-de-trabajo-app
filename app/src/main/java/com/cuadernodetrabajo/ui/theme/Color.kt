@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo.ui.theme
+package com.cuadernodetrabajo.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.example.cuadernodetrabajo
+package com.cuadernodetrabajo
 
 import android.content.Context
 import android.os.Bundle
@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.cuadernodetrabajo.data.AppDatabase
-import com.example.cuadernodetrabajo.repository.CorteRepository
-import com.example.cuadernodetrabajo.ui.AppNavigation
-import com.example.cuadernodetrabajo.ui.theme.CuadernoDeTrabajoTheme
+import com.cuadernodetrabajo.data.AppDatabase
+import com.cuadernodetrabajo.repository.CorteRepository
+import com.cuadernodetrabajo.ui.AppNavigation
+import com.cuadernodetrabajo.ui.theme.CuadernoDeTrabajoTheme
 
 
 class MainActivity : ComponentActivity() {
