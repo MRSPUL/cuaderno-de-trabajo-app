@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -42,6 +43,8 @@ android {
 
 dependencies {
 
+    implementation(libs.firebase.firestore)
+    implementation(platform(libs.firebase.bom))
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
     implementation(libs.coil.compose)

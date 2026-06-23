@@ -1,26 +1,24 @@
-package com.cuadernodetrabajo.ui
+package com.cuadernodetrabajo.ui // Revisá que sea tu paquete
 
+import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.cuadernodetrabajo.repository.CorteRepository
+import androidx.navigation.navArgument
+
+// IMPORTS DE TUS PANTALLAS (Asegurate de que estén bien)
 import com.cuadernodetrabajo.ui.detail.NuevoCorteScreen
 import com.cuadernodetrabajo.ui.home.HomeScreen
 import com.cuadernodetrabajo.ui.onboarding.OnboardingScreen
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import com.cuadernodetrabajo.ui.detail.DetalleCorteScreen
-import android.content.SharedPreferences
 
 @Composable
 fun AppNavigation(
-    repository: CorteRepository,
+    viewModel: CorteViewModel,
     startDestination: String,
     sharedPreferences: SharedPreferences
 ) {
@@ -28,11 +26,11 @@ fun AppNavigation(
 
     NavHost(navController = navController, startDestination = startDestination) {
 
+        // PANTALLA: ONBOARDING
         composable("onboarding") {
             OnboardingScreen(
                 onFinish = {
                     sharedPreferences.edit().putBoolean("ONBOARDING_OK", true).apply()
-
                     navController.navigate("home") {
                         popUpTo("onboarding") { inclusive = true }
                     }
@@ -40,31 +38,23 @@ fun AppNavigation(
             )
         }
 
+
         composable("home") {
             val context = LocalContext.current
-            val viewModel: CorteViewModel = viewModel(factory = CorteViewModelFactory(repository))
-            val listaCortes by viewModel.allCortes.collectAsState()
+
+
+            val listaCortes = viewModel.listaCortes
 
             HomeScreen(
                 cortes = listaCortes,
                 onNavigateToNewCorte = { navController.navigate("nuevo_corte") },
                 onNavigateToDetalle = { id -> navController.navigate("detalle_corte/$id") },
-                onSyncClick = {
-                    Toast.makeText(context, "Sincronizando...", Toast.LENGTH_SHORT).show()
-                    viewModel.syncDataWithServer { success ->
-                        val mensaje = if (success) "¡Sincronización exitosa!" else "Error al sincronizar"
-                        Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show()
-                    }
-                }
+
             )
         }
 
+
         composable("nuevo_corte") {
-            val viewModel: CorteViewModel = viewModel(
-                factory = CorteViewModelFactory(repository)
-            )
-
-
             NuevoCorteScreen(
                 viewModel = viewModel,
                 onNavigateBack = {
@@ -73,12 +63,12 @@ fun AppNavigation(
             )
         }
 
+
         composable(
             route = "detalle_corte/{corteId}",
-            arguments = listOf(navArgument("corteId") { type = NavType.IntType })
+            arguments = listOf(navArgument("corteId") { type = NavType.StringType })
         ) { backStackEntry ->
-            val corteId = backStackEntry.arguments?.getInt("corteId") ?: 0
-            val viewModel: CorteViewModel = viewModel(factory = CorteViewModelFactory(repository))
+            val corteId = backStackEntry.arguments?.getString("corteId") ?: ""
 
             DetalleCorteScreen(
                 corteId = corteId,

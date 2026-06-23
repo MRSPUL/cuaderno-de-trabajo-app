@@ -1,7 +1,9 @@
-package com.cuadernodetrabajo.ui.detail
+package com.cuadernodetrabajo.ui.detail // Revisá que sea tu paquete
 
+import android.Manifest
 import android.content.Context
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -22,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.FileProvider
@@ -33,7 +36,6 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
 
 fun Context.createImageFile(): File {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
@@ -58,11 +60,26 @@ fun NuevoCorteScreen(
 
     var showSuccessDialog by remember { mutableStateOf(false) }
 
+
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
         if (success) {
             photoUri = tempPhotoUri
+        }
+    }
+
+
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+
+            tempPhotoUri?.let { uri ->
+                cameraLauncher.launch(uri)
+            }
+        } else {
+            Toast.makeText(context, "Se necesita permiso para usar la cámara", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -82,7 +99,7 @@ fun NuevoCorteScreen(
                     text = "¡Corte guardado\ncorrectamente!",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    textAlign = TextAlign.Center
                 )
             },
             confirmButton = {
@@ -122,12 +139,14 @@ fun NuevoCorteScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
                     .background(Color.LightGray)
                     .clickable {
+                        // 1. Preparamos el archivo y la URI
                         val file = context.createImageFile()
                         val uri = FileProvider.getUriForFile(
                             context,
@@ -135,7 +154,8 @@ fun NuevoCorteScreen(
                             file
                         )
                         tempPhotoUri = uri
-                        cameraLauncher.launch(uri)
+
+                        permissionLauncher.launch(Manifest.permission.CAMERA)
                     },
                 contentAlignment = Alignment.Center
             ) {
@@ -207,23 +227,21 @@ fun NuevoCorteScreen(
             Button(
                 onClick = {
                     if (photoUri == null || marca.isBlank() || numeroCorte.isBlank() || cantidad.isBlank()) {
-
-                        android.widget.Toast.makeText(
+                        Toast.makeText(
                             context,
                             "Falta completar: Foto, Marca, Número o Cantidad",
-                            android.widget.Toast.LENGTH_LONG
+                            Toast.LENGTH_LONG
                         ).show()
                     } else {
-
                         val nuevoCorte = Corte(
                             marca = marca,
                             numeroCorte = numeroCorte,
                             cantidadCamisas = cantidad.toIntOrNull() ?: 0,
                             datosAdicionales = datosAdicionales,
-                            photoUri = photoUri.toString()
+                            photoUri = photoUri.toString(),
+                            fechaCreacion = System.currentTimeMillis()
                         )
                         viewModel.insert(nuevoCorte)
-
                         showSuccessDialog = true
                     }
                 },

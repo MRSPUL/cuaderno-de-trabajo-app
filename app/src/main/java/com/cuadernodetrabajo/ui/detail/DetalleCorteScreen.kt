@@ -1,5 +1,6 @@
 package com.cuadernodetrabajo.ui.detail
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,15 +28,14 @@ import com.cuadernodetrabajo.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetalleCorteScreen(
-    corteId: Int,
+    corteId: String,
     viewModel: CorteViewModel,
     onNavigateBack: () -> Unit
 ) {
+    val context = LocalContext.current
 
-    val corteList by viewModel.allCortes.collectAsState()
+    val corteList = viewModel.listaCortes
     val corte = corteList.find { it.id == corteId }
-
-
 
     if (corte == null) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -43,30 +44,28 @@ fun DetalleCorteScreen(
         return
     }
 
-
     var isEditing by remember { mutableStateOf(false) }
     var marca by remember { mutableStateOf(corte.marca) }
     var numeroCorte by remember { mutableStateOf(corte.numeroCorte) }
     var cantidad by remember { mutableStateOf(corte.cantidadCamisas.toString()) }
     var datosAdicionales by remember { mutableStateOf(corte.datosAdicionales) }
 
-
     var showDeleteDialog by remember { mutableStateOf(false) }
-
+    var showSuccessDialog by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
         AlertDialog(
             onDismissRequest = { showDeleteDialog = false },
             title = { Text("¿Eliminar corte?") },
-            text = { Text("Esta acción no se puede deshacer. ¿Estás seguro de que querés eliminar este corte?") },
+            text = { Text("Esta acción no se puede deshacer. ¿Estás seguro de que querés eliminar este corte de la nube?") },
             confirmButton = {
                 Button(
                     onClick = {
-                        viewModel.delete(corte)
+                        // Llamamos al nuevo metodo de eliminar pasando el ID
+                        viewModel.eliminar(corte.id)
                         showDeleteDialog = false
                         onNavigateBack()
                     },
-
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.error,
                         contentColor = MaterialTheme.colorScheme.onError
@@ -83,11 +82,6 @@ fun DetalleCorteScreen(
         )
     }
 
-
-    var showSuccessDialog by remember { mutableStateOf(false) }
-    val context = androidx.compose.ui.platform.LocalContext.current
-
-
     if (showSuccessDialog) {
         AlertDialog(
             onDismissRequest = {},
@@ -101,7 +95,7 @@ fun DetalleCorteScreen(
             },
             title = {
                 Text(
-                    text = "¡Corte guardado\ncorrectamente!",
+                    text = "¡Corte actualizado\ncorrectamente!",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center
@@ -111,17 +105,18 @@ fun DetalleCorteScreen(
                 Button(
                     onClick = {
                         showSuccessDialog = false
-                        onNavigateBack() // Volvemos al historial al tocar el botón
+                        isEditing = false
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                 ) {
-                    Text("Volver al inicio", color = Color.White)
+                    Text("Aceptar", color = Color.White)
                 }
             },
             containerColor = MaterialTheme.colorScheme.surface
         )
     }
+
 
     Scaffold(
         topBar = {
@@ -149,8 +144,8 @@ fun DetalleCorteScreen(
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Mostrar la foto si existe usando Coil
-            if (corte.photoUri != null) {
+
+            if (corte.photoUri.isNotEmpty()) {
                 AsyncImage(
                     model = corte.photoUri.toUri(),
                     contentDescription = "Foto del corte",
@@ -168,7 +163,7 @@ fun DetalleCorteScreen(
                 onValueChange = { marca = it },
                 label = { Text("Marca") },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isEditing // Se activa solo si tocamos "Editar"
+                enabled = isEditing
             )
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
@@ -200,7 +195,6 @@ fun DetalleCorteScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-
             if (isEditing) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -208,7 +202,7 @@ fun DetalleCorteScreen(
                 ) {
                     OutlinedButton(
                         onClick = {
-                            // Restaurar valores originales y salir de edición
+                            // Restaurar valores originales
                             marca = corte.marca
                             numeroCorte = corte.numeroCorte
                             cantidad = corte.cantidadCamisas.toString()
@@ -223,11 +217,7 @@ fun DetalleCorteScreen(
                     Button(
                         onClick = {
                             if (marca.isBlank() || numeroCorte.isBlank() || cantidad.isBlank()) {
-                                android.widget.Toast.makeText(
-                                    context,
-                                    "La marca, el número y la cantidad son obligatorios",
-                                    android.widget.Toast.LENGTH_LONG
-                                ).show()
+                                Toast.makeText(context, "Faltan datos obligatorios", Toast.LENGTH_LONG).show()
                             } else {
                                 val corteActualizado = corte.copy(
                                     marca = marca,
@@ -235,8 +225,7 @@ fun DetalleCorteScreen(
                                     cantidadCamisas = cantidad.toIntOrNull() ?: 0,
                                     datosAdicionales = datosAdicionales
                                 )
-                                viewModel.insert(corteActualizado)
-                                isEditing = false
+                                viewModel.actualizar(corteActualizado)
                                 showSuccessDialog = true
                             }
                         },

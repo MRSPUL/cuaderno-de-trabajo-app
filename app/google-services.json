@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "838828182598",
+    "project_id": "cuadernodetrabajo-b14e0",
+    "storage_bucket": "cuadernodetrabajo-b14e0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838828182598:android:8c975655c0037e670f0e47",
+        "android_client_info": {
+          "package_name": "com.cuadernodetrabajo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdLFERvBvhyHbOzEqbLhOcZnGDPPskRLU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
