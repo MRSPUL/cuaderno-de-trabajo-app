@@ -1,5 +1,4 @@
-package com.cuadernodetrabajo.ui // Revisá que sea tu paquete
-
+package com.cuadernodetrabajo.ui
 import android.content.SharedPreferences
 import android.widget.Toast
 import androidx.compose.runtime.Composable
@@ -9,8 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-
-// IMPORTS DE TUS PANTALLAS (Asegurate de que estén bien)
 import com.cuadernodetrabajo.ui.detail.NuevoCorteScreen
 import com.cuadernodetrabajo.ui.home.HomeScreen
 import com.cuadernodetrabajo.ui.onboarding.OnboardingScreen
@@ -26,7 +23,6 @@ fun AppNavigation(
 
     NavHost(navController = navController, startDestination = startDestination) {
 
-        // PANTALLA: ONBOARDING
         composable("onboarding") {
             OnboardingScreen(
                 onFinish = {

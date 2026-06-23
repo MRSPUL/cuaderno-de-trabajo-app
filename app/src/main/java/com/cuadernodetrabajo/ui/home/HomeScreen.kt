@@ -1,4 +1,4 @@
-package com.cuadernodetrabajo.ui.home // Revisá tu paquete
+package com.cuadernodetrabajo.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

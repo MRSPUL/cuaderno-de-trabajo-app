@@ -1,5 +1,4 @@
-package com.cuadernodetrabajo.ui.detail // Revisá que sea tu paquete
-
+package com.cuadernodetrabajo.ui.detail
 import android.Manifest
 import android.content.Context
 import android.net.Uri

@@ -202,7 +202,6 @@ fun DetalleCorteScreen(
                 ) {
                     OutlinedButton(
                         onClick = {
-                            // Restaurar valores originales
                             marca = corte.marca
                             numeroCorte = corte.numeroCorte
                             cantidad = corte.cantidadCamisas.toString()
